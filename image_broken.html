@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>fake art</title>
+    <style type="text/css">
+      body {
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      #picture {
+        height: 700px;
+        width: 500px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let url = "liza.jpeg";
+      // let url = "vanGog.jpg";
+    </script>
+
+    <div id="picture"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let elem = document.getElementById("picture");
+        // elem.style.backgroundImage = "url(" + url + ")";
+
+        const imW = elem.offsetWidth;
+        const imH = elem.offsetHeight;
+        const count = 50;
+        const divW = imW / count;
+        const divH = imH / count;
+        let i = 0;
+        let y = 0;
+        let top = 0;
+        let left = 0;
+        const filters = [
+          // "normal",
+          // "blur",
+          "saturate",
+          "hue-rotate",
+          // "brightness",
+          // "contrast",
+          "invert",
+        ];
+        while (i < count * count) {
+          let div = document.createElement("div");
+          div.id = "div_" + i;
+          if ((y == 0) & (i == 0)) {
+            y += 1;
+          } else {
+            if (y > count - 1) {
+              top += divH;
+              left = 0;
+              y = 1;
+            } else {
+              left += divW;
+              y += 1;
+            }
+          }
+          let filter = filters[Math.floor(Math.random() * filters.length)];
+          let filterValue = 0;
+          if (filter == "invert") {
+            filterValue = Math.floor(Math.random() * 100) + 100 + "%";
+            filter = `${filter}(${filterValue})`;
+          } else if (filter == "saturate") {
+            filterValue = Math.floor(Math.random() * 50) + "%";
+            filter = `${filter}(${filterValue})`;
+          } else if (filter == "normal") {
+            filter = "none";
+          } else if (filter == "hue-rotate") {
+            filterValue = Math.floor(Math.random() * 360) + "deg";
+            filter = `${filter}(${filterValue})`;
+          }
+          div.style = `width: ${divW}px;
+                       height: ${divH}px;
+                       background-image: url(${url});
+                       background-size: ${imW}px ${imH}px;
+                       background-position: top ${-top}px left ${-left}px;
+                       filter: ${filter}`;
+          // div.innerHTML = `<p>${left}|${top}|${y}</p>`;
+          elem.append(div);
+          i += 1;
+        }
+      });
+    </script>
+  </body>
+</html>
