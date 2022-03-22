@@ -17,6 +17,10 @@
         display: flex;
         flex-wrap: wrap;
       }
+
+      #picture div {
+        background-color: grey;
+      }
     </style>
   </head>
   <body>
@@ -47,6 +51,21 @@
       // - кладём в local storage
       // - выводим картины
       //
+
+      function paint() {
+        let paintingData = localStorage.painting.split(",");
+        let painting = document.getElementById("picture");
+        let pixels = painting.childNodes;
+
+        for (var i = 0; i < pixels.length; i++) {
+          let pixel = pixels[i];
+          let filterCSS = paintingData[i];
+
+          pixel.style.backgroundImage = `url(${url})`;
+          pixel.style.filter = `${filterCSS}`;
+        }
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         let elem = document.getElementById("picture");
         // elem.style.backgroundImage = "url(" + url + ")";
@@ -54,7 +73,7 @@
         const imW = elem.offsetWidth;
         const imH = elem.offsetHeight;
 
-        const count = 100;
+        const count = 10;
 
         const divW = imW / count;
         const divH = imH / count;
@@ -63,10 +82,6 @@
         let y = 0;
         let top = 0;
         let left = 0;
-
-        let paintingData = localStorage.painting.split(",");
-
-        console.log(localStorage.painting.split(","));
 
         while (i < count * count) {
           let div = document.createElement("div");
@@ -85,26 +100,17 @@
             }
           }
 
-          let filterCSS = paintingData[i];
-
-          // if (filter == "normal") {
-          //   filter = "none";
-          // } else {
-          //   filterValue = paintingData[i][1];
-          //   filter = filterValue;
-          // }
-
           div.style = `width: ${divW}px;
                        height: ${divH}px;
-                       background-image: url(${url});
                        background-size: ${imW}px ${imH}px;
-                       background-position: top ${-top}px left ${-left}px;
-                       filter: ${filterCSS}`;
-          // div.innerHTML = `<p>${left}|${top}|${y}</p>`;
+                       background-position: top ${-top}px left ${-left}px;`;
+
           elem.append(div);
 
           i += 1;
         }
+
+        setTimeout(() => paint(), 5000);
 
         // console.log(paintingData);
       });
