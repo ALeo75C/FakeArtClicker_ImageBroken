@@ -66,11 +66,11 @@
 
         const filters = [
           "normal",
-          "blur",
+          // "blur",
           "saturate",
           "hue-rotate",
-          "brightness",
-          "contrast",
+          // "brightness",
+          // "contrast",
           "invert",
         ];
 
@@ -79,8 +79,6 @@
         while (i < count * count) {
           let filterRandom = Math.random();
           let filterValueRandom = Math.random();
-
-          paintingData.push([filterRandom, filterValueRandom]);
 
           let div = document.createElement("div");
           div.id = "div_" + i;
@@ -100,26 +98,29 @@
 
           let filter = filters[Math.floor(filterRandom * filters.length)];
           let filterValue = 0;
+          let filterCSS;
 
-          if (filter == "invert") {
+          if (filter == "normal") {
+            filterCSS = "none";
+          } else if (filter == "invert") {
             filterValue = Math.floor(filterValueRandom * 100) + 100 + "%";
-            filter = `${filter}(${filterValue})`;
+            filterCSS = `${filter}(${filterValue})`;
           } else if (filter == "saturate") {
             filterValue = Math.floor(filterValueRandom * 50) + "%";
-            filter = `${filter}(${filterValue})`;
-          } else if (filter == "normal") {
-            filter = "none";
+            filterCSS = `${filter}(${filterValue})`;
           } else if (filter == "hue-rotate") {
             filterValue = Math.floor(filterValueRandom * 360) + "deg";
-            filter = `${filter}(${filterValue})`;
+            filterCSS = `${filter}(${filterValue})`;
           }
+
+          paintingData.push(filterCSS);
 
           div.style = `width: ${divW}px;
                        height: ${divH}px;
                        background-image: url(${url});
                        background-size: ${imW}px ${imH}px;
                        background-position: top ${-top}px left ${-left}px;
-                       filter: ${filter}`;
+                       filter: ${filterCSS}`;
           // div.innerHTML = `<p>${left}|${top}|${y}</p>`;
           elem.append(div);
 
